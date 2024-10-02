@@ -182,7 +182,8 @@ class Program
 
     static void PerformSearch(ProductManager productManager)
     {
-        Console.Write("Enter search term \x1B[33m(Product name or Category):\x1B[0m ");
+
+        Console.Write($"\nEnter search term \x1B[33m(Product name or Category):\x1B[0m ");
         string? searchTerm = Console.ReadLine();
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
@@ -190,7 +191,7 @@ class Program
             List<Product> foundProducts = productManager.SearchProducts(searchTerm);
             if (foundProducts.Any())
             {
-                Console.WriteLine($"\nFound  \x1B[31m{foundProducts.Count}\x1B[0m product(s) matching \x1B[32m'{searchTerm}'\x1B[0m:");
+                Console.WriteLine($"\nFound \x1B[31m{foundProducts.Count}\x1B[0m product(s) matching \x1B[32m'{searchTerm}'\x1B[0m:");
                 productManager.DisplayProducts(foundProducts);
             }
             else
