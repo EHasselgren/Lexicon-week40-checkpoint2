@@ -1,0 +1,14 @@
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\bin\Debug\net8.0\lexicon-week40-checkpoint2.exe
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\bin\Debug\net8.0\lexicon-week40-checkpoint2.deps.json
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\bin\Debug\net8.0\lexicon-week40-checkpoint2.runtimeconfig.json
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\bin\Debug\net8.0\lexicon-week40-checkpoint2.dll
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\bin\Debug\net8.0\lexicon-week40-checkpoint2.pdb
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\lexicon-week40-checkpoint2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\lexicon-week40-checkpoint2.AssemblyInfoInputs.cache
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\lexicon-week40-checkpoint2.AssemblyInfo.cs
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\lexicon-week40-checkpoint2.csproj.CoreCompileInputs.cache
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\lexicon-week40-checkpoint2.dll
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\refint\lexicon-week40-checkpoint2.dll
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\lexicon-week40-checkpoint2.pdb
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\lexicon-week40-checkpoint2.genruntimeconfig.cache
+C:\Users\elias\source\repos\lexicon-week40-checkpoint2\obj\Debug\net8.0\ref\lexicon-week40-checkpoint2.dll
