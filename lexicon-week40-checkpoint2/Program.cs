@@ -57,6 +57,7 @@ public class ProductManager
         Console.WriteLine("\nProducts \x1B[33m(Sorted by Price)\x1B[0m:");
         Console.WriteLine();
 
+
         foreach (var product in sortedProducts)
         {
             Console.WriteLine(product.Print());
@@ -127,8 +128,7 @@ class Program
 
         while (continueRunning)
         {
-            Console.WriteLine("\n\x1B[34mTo enter a new product - press\x1B[0m \x1B[31m'P'\x1B[0m \x1B[34m|| To search for a product - press \x1B[0m \x1B[32m'S'\x1B[0m \x1B[34m|| To quit - press\x1B[0m \x1B[33m'Q'\x1B[0m:");
-            string? userInput = Console.ReadLine()?.ToUpper();
+            Console.WriteLine("\n\x1B[34mTo enter a new product - press\x1B[0m \x1B[31m'P'\x1B[0m \x1B[34m|| To search for a product - press \x1B[0m \x1B[32m'S'\x1B[0m \x1B[34m|| To quit - press\x1B[0m \x1B[33m'Q'\x1B[0m:"); string? userInput = Console.ReadLine()?.ToUpper();
 
             switch (userInput)
             {
