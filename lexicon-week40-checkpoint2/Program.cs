@@ -18,7 +18,7 @@ public class Product
         Price = price;
     }
 
-    public override string ToString()
+    public string Print()
     {
         return $"Product name: \x1B[31m{ProductName}\x1B[0m Category: \x1B[32m{Category}\x1B[0m Price: \x1B[33m{Price:C}\x1B[0m";
     }
@@ -59,7 +59,7 @@ public class ProductManager
 
         foreach (var product in sortedProducts)
         {
-            Console.WriteLine(product);
+            Console.WriteLine(product.Print());
         }
 
         Console.WriteLine($"\nTotal Price of all products: \x1B[93m{totalPrice:C}\x1B[0m");
@@ -148,12 +148,11 @@ class Program
     static void Main(string[] args)
     {
         var productManager = new ProductManager();
-
         string filePath = "products.json";
+        bool continueAdding = true;
 
         productManager.LoadProductsFromFile(filePath);
 
-        bool continueAdding = true;
         while (continueAdding)
         {
             AddProducts(productManager);
@@ -162,7 +161,7 @@ class Program
 
             Console.WriteLine("\nDo you want to add more products? \x1B[31m(y/n)\x1B[0m: ");
 
-            string? continueInput = Console.ReadLine()?.ToLower();
+            string? continueInput = Console.ReadLine()?.Trim().ToLower();
 
             continueAdding = continueInput == "y";
         }
@@ -171,7 +170,7 @@ class Program
 
         Console.WriteLine("\nDo you want to save the product list? \x1B[31m(y/n)\x1B[0m: ");
 
-        string? saveInput = Console.ReadLine()?.ToLower();
+        string? saveInput = Console.ReadLine()?.Trim().ToLower();
 
         if (saveInput == "y")
         {
@@ -186,7 +185,7 @@ class Program
             Console.WriteLine("\nEnter product details or write \u001b[31m'q'\u001b[0m: to quit:");
             Console.Write("Product Name: ");
 
-            string? productNameInput = Console.ReadLine();
+            string? productNameInput = Console.ReadLine()?.Trim();
 
             if (string.IsNullOrWhiteSpace(productNameInput))
             {
@@ -200,7 +199,7 @@ class Program
 
             Console.Write("Category: ");
 
-            string? categoryInput = Console.ReadLine();
+            string? categoryInput = Console.ReadLine()?.Trim();
 
             if (string.IsNullOrWhiteSpace(categoryInput))
             {
@@ -212,7 +211,7 @@ class Program
 
             Console.Write("Price: ");
 
-            string? priceInput = Console.ReadLine();
+            string? priceInput = Console.ReadLine()?.Trim();
 
             if (!decimal.TryParse(priceInput, out decimal price))
             {
@@ -227,7 +226,7 @@ class Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error adding product:\x1B[31m {ex.Message}\u001b[0m");
+                Console.WriteLine($"Error adding product: \x1B[31m{ex.Message}\x1B[0m");
             }
         }
     }
