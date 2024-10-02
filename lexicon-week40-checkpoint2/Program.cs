@@ -17,9 +17,20 @@ public class Product
         Price = price;
     }
 
+    private string Truncate(string value, int maxLength)
+    {
+        return value.Length <= maxLength ? value : value.Substring(0, maxLength - 3) + "...";
+    }
+
     public string Print()
     {
-        return $"Product name: \x1B[31m{ProductName}\x1B[0m Category: \x1B[32m{Category}\x1B[0m Price: \x1B[33m{Price:C}\x1B[0m";
+        string productLabel = "Product name:".PadRight(15);
+        string categoryLabel = "Category:".PadRight(10);
+        string priceLabel = "Price:".PadRight(7);
+        string truncatedProductName = Truncate(ProductName, 20);
+        string truncatedCategory = Truncate(Category, 15);
+
+        return $"{productLabel} \x1B[31m{truncatedProductName.PadRight(20)}\x1B[0m {categoryLabel} \x1B[32m{truncatedCategory.PadRight(20)}\x1B[0m {priceLabel} \x1B[33m{Price:C}\x1B[0m";
     }
 }
 
@@ -35,7 +46,7 @@ public class ProductManager
         if (!isDuplicate)
         {
             products.Add(product);
-            Console.WriteLine("Product added successfully!");
+            Console.WriteLine($"\nProduct added successfully!");
         }
         else
         {
@@ -54,9 +65,7 @@ public class ProductManager
         var sortedProducts = productsToDisplay.OrderBy(p => p.Price).ToList();
         decimal totalPrice = sortedProducts.Sum(p => p.Price);
 
-        Console.WriteLine("\nProducts \x1B[33m(Sorted by Price)\x1B[0m:");
-        Console.WriteLine();
-
+        Console.WriteLine("\nProducts \x1B[33m(Sorted by Price)\x1B[0m:\n");
 
         foreach (var product in sortedProducts)
         {
@@ -101,7 +110,7 @@ public class ProductManager
             {
                 string jsonString = File.ReadAllText(filePath);
                 products = JsonSerializer.Deserialize<List<Product>>(jsonString) ?? new List<Product>();
-                Console.WriteLine("Products successfully loaded from file:");
+                Console.WriteLine("\x1B[34mProducts successfully loaded from file! \x1B[0m");
                 DisplayAllProducts();
             }
             else
@@ -128,18 +137,21 @@ class Program
 
         while (continueRunning)
         {
-            Console.WriteLine("\n\x1B[34mTo enter a new product - press\x1B[0m \x1B[31m'P'\x1B[0m \x1B[34m|| To search for a product - press \x1B[0m \x1B[32m'S'\x1B[0m \x1B[34m|| To quit - press\x1B[0m \x1B[33m'Q'\x1B[0m:"); string? userInput = Console.ReadLine()?.ToUpper();
+            Console.WriteLine("\n\x1B[34mTo enter a new product - press\x1B[0m \x1B[31m'P'\x1B[0m \x1B[34m|| To search for a product - press \x1B[0m \x1B[32m'S'\x1B[0m \x1B[34m|| To quit - press\x1B[0m \x1B[33m'Q'\x1B[0m:");
 
-            switch (userInput)
+            var keyInfo = Console.ReadKey(true);
+            char userInputChar = char.ToUpper(keyInfo.KeyChar);
+
+            switch (userInputChar)
             {
-                case "P":
+                case 'P':
                     AddProducts(productManager);
                     productManager.DisplayAllProducts();
                     break;
-                case "S":
+                case 'S':
                     PerformSearch(productManager);
                     break;
-                case "Q":
+                case 'Q':
                     Console.WriteLine("\nDo you want to save the product list? \x1B[31m(y/n)\x1B[0m: ");
                     string? saveInput = Console.ReadLine()?.Trim().ToLower();
                     if (saveInput == "y")
@@ -180,12 +192,15 @@ class Program
         while (true)
         {
             Console.WriteLine("\nEnter product details or write \u001b[31m'q'\u001b[0m: to quit:");
+            Console.WriteLine();
+
             Console.Write("Product Name: ");
+
             string? productNameInput = Console.ReadLine()?.Trim();
 
             if (string.IsNullOrWhiteSpace(productNameInput))
             {
-                Console.WriteLine("Product name cannot be empty. Please enter a valid product name.");
+                Console.WriteLine("Product name cannot be empty! Please enter a valid product name.");
                 continue;
             }
 
@@ -222,6 +237,16 @@ class Program
             {
                 Console.WriteLine($"Error adding product: \x1B[31m{ex.Message}\x1B[0m");
             }
+
+            Console.WriteLine("\nDo you want to add another product? (Press any key to continue or 'q' to quit): ");
+
+            var keyInfo = Console.ReadKey(true);
+
+            if (char.ToLower(keyInfo.KeyChar) == 'q')
+            {
+                break;
+            }
         }
     }
+
 }
