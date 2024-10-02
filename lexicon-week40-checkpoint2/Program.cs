@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -55,7 +54,8 @@ public class ProductManager
         var sortedProducts = productsToDisplay.OrderBy(p => p.Price).ToList();
         decimal totalPrice = sortedProducts.Sum(p => p.Price);
 
-        Console.WriteLine("\nProducts List  \x1B[33m(Sorted by Price)\x1B[0m:");
+        Console.WriteLine("\nProducts \x1B[33m(Sorted by Price)\x1B[0m:");
+        Console.WriteLine();
 
         foreach (var product in sortedProducts)
         {
@@ -100,7 +100,8 @@ public class ProductManager
             {
                 string jsonString = File.ReadAllText(filePath);
                 products = JsonSerializer.Deserialize<List<Product>>(jsonString) ?? new List<Product>();
-                Console.WriteLine("Products successfully loaded from file.");
+                Console.WriteLine("Products successfully loaded from file:");
+                DisplayAllProducts();
             }
             else
             {
@@ -116,65 +117,61 @@ public class ProductManager
 
 class Program
 {
-    static void PerformSearch(ProductManager productManager)
-    {
-        Console.WriteLine("\nWould you like to search for a product? \x1B[31m(y/n)\x1B[0m:");
-
-        string? searchInput = Console.ReadLine()?.ToLower();
-
-        if (searchInput == "y")
-        {
-            Console.Write("Enter search term \x1B[33m(Product name or Category):\x1B[0m ");
-
-            string? searchTerm = Console.ReadLine();
-
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                List<Product> foundProducts = productManager.SearchProducts(searchTerm);
-
-                if (foundProducts.Any())
-                {
-                    Console.WriteLine($"\nFound  \x1B[31m{foundProducts.Count}\x1B[0m product(s) matching \x1B[32m'{searchTerm}'\x1B[0m:");
-                    productManager.DisplayProducts(foundProducts);
-                }
-                else
-                {
-                    Console.WriteLine($"No products found matching \x1B[32m'{searchTerm}'\x1B[0m.");
-                }
-            }
-        }
-    }
-
     static void Main(string[] args)
     {
         var productManager = new ProductManager();
         string filePath = "products.json";
-        bool continueAdding = true;
 
         productManager.LoadProductsFromFile(filePath);
+        bool continueRunning = true;
 
-        while (continueAdding)
+        while (continueRunning)
         {
-            AddProducts(productManager);
+            Console.WriteLine("\n\x1B[34mTo enter a new product - press\x1B[0m \x1B[31m'P'\x1B[0m \x1B[34m|| To search for a product - press \x1B[0m \x1B[32m'S'\x1B[0m \x1B[34m|| To quit - press\x1B[0m \x1B[33m'Q'\x1B[0m:");
+            string? userInput = Console.ReadLine()?.ToUpper();
 
-            productManager.DisplayAllProducts();
-
-            Console.WriteLine("\nDo you want to add more products? \x1B[31m(y/n)\x1B[0m: ");
-
-            string? continueInput = Console.ReadLine()?.Trim().ToLower();
-
-            continueAdding = continueInput == "y";
+            switch (userInput)
+            {
+                case "P":
+                    AddProducts(productManager);
+                    productManager.DisplayAllProducts();
+                    break;
+                case "S":
+                    PerformSearch(productManager);
+                    break;
+                case "Q":
+                    Console.WriteLine("\nDo you want to save the product list? \x1B[31m(y/n)\x1B[0m: ");
+                    string? saveInput = Console.ReadLine()?.Trim().ToLower();
+                    if (saveInput == "y")
+                    {
+                        productManager.SaveProductsToFile(filePath);
+                    }
+                    continueRunning = false;
+                    break;
+                default:
+                    Console.WriteLine("Invalid option. Please try again.");
+                    break;
+            }
         }
+    }
 
-        PerformSearch(productManager);
+    static void PerformSearch(ProductManager productManager)
+    {
+        Console.Write("Enter search term \x1B[33m(Product name or Category):\x1B[0m ");
+        string? searchTerm = Console.ReadLine();
 
-        Console.WriteLine("\nDo you want to save the product list? \x1B[31m(y/n)\x1B[0m: ");
-
-        string? saveInput = Console.ReadLine()?.Trim().ToLower();
-
-        if (saveInput == "y")
+        if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            productManager.SaveProductsToFile(filePath);
+            List<Product> foundProducts = productManager.SearchProducts(searchTerm);
+            if (foundProducts.Any())
+            {
+                Console.WriteLine($"\nFound  \x1B[31m{foundProducts.Count}\x1B[0m product(s) matching \x1B[32m'{searchTerm}'\x1B[0m:");
+                productManager.DisplayProducts(foundProducts);
+            }
+            else
+            {
+                Console.WriteLine($"No products found matching \x1B[32m'{searchTerm}'\x1B[0m.");
+            }
         }
     }
 
@@ -184,7 +181,6 @@ class Program
         {
             Console.WriteLine("\nEnter product details or write \u001b[31m'q'\u001b[0m: to quit:");
             Console.Write("Product Name: ");
-
             string? productNameInput = Console.ReadLine()?.Trim();
 
             if (string.IsNullOrWhiteSpace(productNameInput))
@@ -198,7 +194,6 @@ class Program
             if (productName == "q") break;
 
             Console.Write("Category: ");
-
             string? categoryInput = Console.ReadLine()?.Trim();
 
             if (string.IsNullOrWhiteSpace(categoryInput))
@@ -210,7 +205,6 @@ class Program
             string category = categoryInput.ToLower();
 
             Console.Write("Price: ");
-
             string? priceInput = Console.ReadLine()?.Trim();
 
             if (!decimal.TryParse(priceInput, out decimal price))
