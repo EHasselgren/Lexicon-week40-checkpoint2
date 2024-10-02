@@ -146,24 +146,37 @@ class Program
             {
                 case 'P':
                     AddProducts(productManager);
+
                     productManager.DisplayAllProducts();
+
                     break;
                 case 'S':
                     PerformSearch(productManager);
+
                     break;
                 case 'Q':
                     Console.WriteLine("\nDo you want to save the product list? \x1B[31m(y/n)\x1B[0m: ");
-                    string? saveInput = Console.ReadLine()?.Trim().ToLower();
+
+                    var saveKeyInfo = Console.ReadKey(true);
+                    string? saveInput = char.ToLower(saveKeyInfo.KeyChar) == 'y' ? "y" : "n";
+
                     if (saveInput == "y")
                     {
                         productManager.SaveProductsToFile(filePath);
                     }
+
                     continueRunning = false;
+
+                    Console.WriteLine("\nExiting application... Press any key to exit.");
+                    Console.ReadKey();
                     break;
+
                 default:
+
                     Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
+
         }
     }
 
@@ -209,6 +222,7 @@ class Program
             if (productName == "q") break;
 
             Console.Write("Category: ");
+
             string? categoryInput = Console.ReadLine()?.Trim();
 
             if (string.IsNullOrWhiteSpace(categoryInput))
@@ -220,6 +234,7 @@ class Program
             string category = categoryInput.ToLower();
 
             Console.Write("Price: ");
+
             string? priceInput = Console.ReadLine()?.Trim();
 
             if (!decimal.TryParse(priceInput, out decimal price))
@@ -231,6 +246,7 @@ class Program
             try
             {
                 Product product = new Product(productName, category, price);
+
                 productManager.AddProduct(product);
             }
             catch (Exception ex)
@@ -238,7 +254,7 @@ class Program
                 Console.WriteLine($"Error adding product: \x1B[31m{ex.Message}\x1B[0m");
             }
 
-            Console.WriteLine("\nDo you want to add another product? (Press any key to continue or 'q' to quit): ");
+            Console.WriteLine("\nDo you want to add another product? \u001b[31m(Press any key to continue or 'q' to quit)\u001b[0m: ");
 
             var keyInfo = Console.ReadKey(true);
 
